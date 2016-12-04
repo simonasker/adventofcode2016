@@ -1,7 +1,7 @@
 [package]
 name = "adventofcode2016"
 version = "0.1.0"
-authors = ["Simon Andersson <simon@mullvad.net>"]
+authors = ["Simon Andersson <simonasker@posteo.net>"]
 
 [dependencies]
 clap = "2"

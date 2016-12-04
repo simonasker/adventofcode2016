@@ -8,7 +8,7 @@ fn main() {
     let matches = App::new("Advent of Code 2016")
         .version("0.1")
         .author("Simon Andersson <simonasker@posteo.net>")
-        .about("Solutions to Advent of code 2016")
+        .about("Solutions to Advent of Code 2016")
         .arg(Arg::with_name("day")
             .short("d")
             .long("day")
