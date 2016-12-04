@@ -1,4 +1,6 @@
 mod solutions;
+mod day01;
+mod day02;
 
 extern crate clap;
 
@@ -18,9 +20,7 @@ fn main() {
             .takes_value(true))
         .get_matches();
 
-    let day = matches.value_of("day").unwrap();
+    let day = matches.value_of("day").unwrap().parse::<i32>().unwrap();
 
-    println!("Running solution for day: {}", day);
-
-    solutions::solve_problem();
+    solutions::run(day);
 }
