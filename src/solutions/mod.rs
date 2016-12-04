@@ -1,5 +1,5 @@
-use day01;
-use day02;
+mod day01;
+mod day02;
 
 pub fn run(day: i32) {
     match day {
