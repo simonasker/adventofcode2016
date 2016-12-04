@@ -43,7 +43,7 @@ fn part_one() {
             heading = 4 + heading;
         }
 
-        for i in 0..dist {
+        for _ in 0..dist {
             match heading {
                 0 => v += 1,
                 1 => h += 1,
