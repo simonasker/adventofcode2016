@@ -36,6 +36,30 @@ impl AbbaQueue {
     }
 }
 
+#[derive(Debug)]
+struct AbaQueue {
+    queue: [char; 3],
+}
+
+impl AbaQueue {
+    fn new() -> Self {
+        AbaQueue {
+            queue: ['-'; 3],
+        }
+    }
+
+    fn add(&mut self, c: char) {
+        self.queue[0] = self.queue[1];
+        self.queue[1] = self.queue[2];
+        self.queue[2] = c;
+    }
+
+    fn is_aba(&self) -> bool {
+        self.queue[0] == self.queue[2] &&
+            self.queue[0] != self.queue[1]
+    }
+}
+
 fn part_one() {
     let f = File::open("input/day07.txt").unwrap();
     let reader = BufReader::new(f);
@@ -87,5 +111,49 @@ fn part_one() {
 }
 
 fn part_two() {
-    println!("Not yet implemented");
+    let f = File::open("input/day07_test.txt").unwrap();
+    let reader = BufReader::new(f);
+
+    for line in reader.lines() {
+        let line = line.unwrap();
+
+        let mut chars = line.chars();
+        let mut inside = false;
+        let mut aq = AbaQueue::new();
+
+        println!("{}", line);
+        loop {
+            if let Some(c) = chars.next() {
+                match c {
+                    '[' => {
+                        inside = true;
+                        aq = AbaQueue::new();
+                    },
+                    ']' => {
+                        inside = false;
+                        aq = AbaQueue::new();
+                    },
+                    _ => {
+                        aq.add(c);
+                        if aq.is_aba() {
+                            println!("{:?}", aq);
+                            // if inside {
+                            //     abba_inside = true;
+                            // } else {
+                            //     abba_outside = true;
+                            // }
+                        }
+                    },
+                }
+            } else {
+                break;
+            }
+        }
+
+        // if abba_outside && !abba_inside {
+        //     tls_ips += 1;
+        // }
+    }
+
+    // println!("Answer: {}", tls_ips);
 }
