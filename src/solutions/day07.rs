@@ -36,7 +36,7 @@ impl AbbaQueue {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct AbaQueue {
     queue: [char; 3],
 }
@@ -111,8 +111,10 @@ fn part_one() {
 }
 
 fn part_two() {
-    let f = File::open("input/day07_test.txt").unwrap();
+    let f = File::open("input/day07.txt").unwrap();
     let reader = BufReader::new(f);
+
+    let mut ssl_ips = 0;
 
     for line in reader.lines() {
         let line = line.unwrap();
@@ -120,6 +122,9 @@ fn part_two() {
         let mut chars = line.chars();
         let mut inside = false;
         let mut aq = AbaQueue::new();
+
+        let mut abas: Vec<AbaQueue> = Vec::new();
+        let mut babs: Vec<AbaQueue> = Vec::new();
 
         println!("{}", line);
         loop {
@@ -137,11 +142,11 @@ fn part_two() {
                         aq.add(c);
                         if aq.is_aba() {
                             println!("{:?}", aq);
-                            // if inside {
-                            //     abba_inside = true;
-                            // } else {
-                            //     abba_outside = true;
-                            // }
+                            if inside {
+                                abas.push(aq.clone());
+                            } else {
+                                babs.push(aq.clone());
+                            }
                         }
                     },
                 }
@@ -150,10 +155,22 @@ fn part_two() {
             }
         }
 
-        // if abba_outside && !abba_inside {
-        //     tls_ips += 1;
-        // }
+        println!("{:?}", abas);
+        println!("{:?}", babs);
+        println!("");
+
+        'a: for bab in &babs {
+            for aba in &abas {
+                println!("Comparing {:?} to {:?}", bab.queue, aba.queue);
+                if bab.queue[0] == aba.queue[1] && bab.queue[1] == aba.queue[0] {
+                    ssl_ips += 1;
+                    break 'a;
+                }
+            }
+        }
+
+        println!("-----------------------------------------------------------");
     }
 
-    // println!("Answer: {}", tls_ips);
+    println!("Answer: {}", ssl_ips);
 }
