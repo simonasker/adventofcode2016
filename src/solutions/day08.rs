@@ -29,6 +29,14 @@ impl Screen {
         self.array[y][x] = 1;
     }
 
+    fn rect(&mut self, a: usize, b: usize) {
+        for i in 0..b {
+            for j in 0..a {
+                self.turn_on(j, i);
+            }
+        }
+    }
+
     fn count_pixels(&self) -> u32 {
         let mut total: u32 = 0;
 
@@ -48,10 +56,7 @@ fn part_one() {
     let reader = BufReader::new(f);
 
     let mut screen = Screen::new();
-    screen.turn_on(0, 0);
-    screen.turn_on(1, 1);
-    screen.turn_on(2, 2);
-    screen.turn_on(2, 2);
+    screen.rect(3, 2);
     println!("{:?}", screen);
     println!("Sum: {}", screen.count_pixels());
 
