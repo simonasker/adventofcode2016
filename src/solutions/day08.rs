@@ -1,3 +1,4 @@
+use std::fmt;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
@@ -50,6 +51,16 @@ impl Screen {
     }
 }
 
+impl fmt::Display for Screen {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut output = String::new();
+        for a in self.array.iter() {
+            output.push_str(format!("{:?}\n", a).as_ref());
+        }
+        write!(f, "{}", output)
+    }
+}
+
 
 fn part_one() {
     let f = File::open("input/day08.txt").unwrap();
@@ -57,7 +68,7 @@ fn part_one() {
 
     let mut screen = Screen::new();
     screen.rect(3, 2);
-    println!("{:?}", screen);
+    println!("{}", screen);
     println!("Sum: {}", screen.count_pixels());
 
     for line in reader.lines() {
