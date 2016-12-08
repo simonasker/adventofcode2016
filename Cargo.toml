@@ -6,3 +6,4 @@ authors = ["Simon Andersson <simonasker@posteo.net>"]
 [dependencies]
 clap = "2"
 rust-crypto = "0.2.36"
+regex = "0.1"

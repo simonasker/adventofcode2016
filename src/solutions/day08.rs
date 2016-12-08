@@ -1,3 +1,5 @@
+extern crate regex;
+
 use std::fmt;
 use std::fs::File;
 use std::io::BufReader;
@@ -94,10 +96,29 @@ fn part_one() {
     println!("{}", screen);
     println!("Sum: {}", screen.count_pixels());
 
+    let rect_re = regex::Regex::new(r"^rect (\d+)x(\d)$").unwrap();
+    let rotate_column_re = regex::Regex::new(r"^rotate column x=(\d+) by (\d)$").unwrap();
+    let rotate_row_re = regex::Regex::new(r"^rotate row y=(\d+) by (\d)$").unwrap();
+
     for line in reader.lines() {
         let line = line.unwrap();
 
         println!("{}", line);
+        if let Some(caps) = rect_re.captures(&line) {
+            println!("A: {:?}, B: {:?}", caps.at(1), caps.at(2));
+            continue;
+        }
+
+        if let Some(caps) = rotate_column_re.captures(&line) {
+            println!("x={:?} by {:?}", caps.at(1), caps.at(2));
+            continue;
+        }
+
+        if let Some(caps) = rotate_row_re.captures(&line) {
+            println!("y={:?} by {:?}", caps.at(1), caps.at(2));
+            continue;
+        }
+
 
     }
 
