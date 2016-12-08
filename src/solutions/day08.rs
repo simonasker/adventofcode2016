@@ -48,6 +48,16 @@ impl Screen {
         }
     }
 
+    fn rotate_row(&mut self, y: usize, n: u32) {
+        for _ in 0..n {
+            let last = self.array[y][SCREEN_WIDTH-1];
+            for i in (1..SCREEN_WIDTH).rev() {
+                self.array[y][i] = self.array[y][i-1];
+            }
+            self.array[y][0] = last;
+        }
+    }
+
     fn count_pixels(&self) -> u32 {
         let mut total: u32 = 0;
 
@@ -78,6 +88,8 @@ fn part_one() {
 
     let mut screen = Screen::new();
     screen.rect(3, 2);
+    screen.rotate_column(1, 1);
+    screen.rotate_row(0, 4);
     screen.rotate_column(1, 1);
     println!("{}", screen);
     println!("Sum: {}", screen.count_pixels());
