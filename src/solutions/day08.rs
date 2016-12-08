@@ -4,9 +4,10 @@ use std::fmt;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::str::FromStr;
 
-const SCREEN_WIDTH: usize = 7;
-const SCREEN_HEIGHT: usize = 3;
+const SCREEN_WIDTH: usize = 50;
+const SCREEN_HEIGHT: usize = 6;
 
 pub fn run(part: i32) {
     match part {
@@ -16,7 +17,6 @@ pub fn run(part: i32) {
     }
 }
 
-#[derive(Debug)]
 struct Screen {
     array: [[u8; SCREEN_WIDTH]; SCREEN_HEIGHT],
 }
@@ -77,7 +77,14 @@ impl fmt::Display for Screen {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut output = String::new();
         for a in self.array.iter() {
-            output.push_str(format!("{:?}\n", a).as_ref());
+            for x in a.iter() {
+                match x {
+                    &0u8 => output.push('.'),
+                    &1u8 => output.push('#'),
+                    _ => { },
+                }
+            }
+            output.push('\n');
         }
         write!(f, "{}", output)
     }
@@ -89,38 +96,40 @@ fn part_one() {
     let reader = BufReader::new(f);
 
     let mut screen = Screen::new();
-    screen.rect(3, 2);
-    screen.rotate_column(1, 1);
-    screen.rotate_row(0, 4);
-    screen.rotate_column(1, 1);
-    println!("{}", screen);
-    println!("Sum: {}", screen.count_pixels());
 
     let rect_re = regex::Regex::new(r"^rect (\d+)x(\d)$").unwrap();
-    let rotate_column_re = regex::Regex::new(r"^rotate column x=(\d+) by (\d)$").unwrap();
-    let rotate_row_re = regex::Regex::new(r"^rotate row y=(\d+) by (\d)$").unwrap();
+    let rotate_column_re = regex::Regex::new(r"^rotate column x=(\d+) by (\d+)$").unwrap();
+    let rotate_row_re = regex::Regex::new(r"^rotate row y=(\d+) by (\d+)$").unwrap();
 
     for line in reader.lines() {
         let line = line.unwrap();
 
-        println!("{}", line);
         if let Some(caps) = rect_re.captures(&line) {
-            println!("A: {:?}, B: {:?}", caps.at(1), caps.at(2));
+            screen.rect(
+                usize::from_str(caps.at(1).unwrap()).unwrap(),
+                usize::from_str(caps.at(2).unwrap()).unwrap(),
+            );
             continue;
         }
 
         if let Some(caps) = rotate_column_re.captures(&line) {
-            println!("x={:?} by {:?}", caps.at(1), caps.at(2));
+            screen.rotate_column(
+                usize::from_str(caps.at(1).unwrap()).unwrap(),
+                u32::from_str(caps.at(2).unwrap()).unwrap(),
+            );
             continue;
         }
 
         if let Some(caps) = rotate_row_re.captures(&line) {
-            println!("y={:?} by {:?}", caps.at(1), caps.at(2));
+            screen.rotate_row(
+                usize::from_str(caps.at(1).unwrap()).unwrap(),
+                u32::from_str(caps.at(2).unwrap()).unwrap(),
+            );
             continue;
         }
-
-
     }
+    println!("{}", screen);
+    println!("Sum: {}", screen.count_pixels());
 
 }
 
