@@ -34,6 +34,14 @@ fn part_one() {
                 let reps = u32::from_str(asd.next().unwrap()).unwrap();
                 println!("Num chars: {}", num_chars);
                 println!("Repetitions: {}", reps);
+                let chars: String = char_iter
+                    .by_ref()
+                    .take(num_chars as usize)
+                    .collect();
+                println!("{:?}", chars);
+                for _ in 0..reps {
+                    output.push_str(&chars);
+                }
             },
             Some(c) => {
                 output.push(c);
@@ -42,7 +50,8 @@ fn part_one() {
         }
     }
 
-    println!("{}", output);
+    println!("Input length: {}", input.len());
+    println!("Output length: {}", output.len());
 
 }
 
