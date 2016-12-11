@@ -1,9 +1,9 @@
 extern crate regex;
 
-use std::cmp;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::str::FromStr;
 
 pub fn run(part: i32) {
     match part {
@@ -55,37 +55,45 @@ fn part_one() {
     let give_re = regex::Regex::new(
         r"^bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)$").unwrap();
 
-    let mut bot = Bot::new();
-    bot.give(10);
-    bot.give(12);
-    println!("{:?}", bot);
-    println!("{:?}", bot.take_low());
-    bot.give(18);
-    println!("{:?}", bot.take_high());
-    println!("===================================================");
+    let mut bots: Vec<Bot> = Vec::new();
+
+    let num_bots = 3;
+    for _ in 0..num_bots {
+        bots.push(Bot::new());
+    }
 
     for line in reader.lines() {
         let line = line.unwrap();
         println!("{}", line);
 
         if let Some(caps) = input_re.captures(&line) {
-            let value = caps.at(1).unwrap();
-            let bot = caps.at(2).unwrap();
-            println!("Value: {}, Bot: {}", value, bot);
+            let value = u32::from_str(caps.at(1).unwrap()).unwrap();
+            let bot = usize::from_str(caps.at(2).unwrap()).unwrap();
+
+            bots[bot].give(value);
         }
 
         if let Some(caps) = give_re.captures(&line) {
-            let bot = caps.at(1).unwrap();
+            let bot = usize::from_str(caps.at(1).unwrap()).unwrap();
+
+            let low_val = bots[bot].take_low().unwrap();
+            let high_val = bots[bot].take_high().unwrap();
+
             let low_type = caps.at(2).unwrap();
-            let low = caps.at(3).unwrap();
+            let low = usize::from_str(caps.at(3).unwrap()).unwrap();
+            if low_type == "bot" {
+                bots[low].give(low_val);
+            }
 
             let high_type = caps.at(4).unwrap();
-            let high = caps.at(5).unwrap();
-
-            println!("{}", caps.at(1).unwrap());
-            println!("Bot: {}, H -> {} {}, L -> {} {}", bot, low_type, low, high_type, high);
+            let high = usize::from_str(caps.at(5).unwrap()).unwrap();
+            if high_type == "bot" {
+                bots[high].give(high_val);
+            }
         }
     }
+
+    println!("{:?}", bots);
 }
 
 fn part_two() {
