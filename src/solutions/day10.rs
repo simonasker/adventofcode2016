@@ -62,22 +62,27 @@ fn part_one() {
          bots.push(Bot::new());
      }
 
-    let lines: Vec<String> = reader.lines().map(|l| l.unwrap()).collect();
+    let mut lines: Vec<(String, bool)> = reader.lines().map(|l| (l.unwrap(), false)).collect();
 
     let mut done = false;
     while !done {
 
         let mut line_iter = lines.clone().into_iter();
-        for line in line_iter.by_ref() {
+        for (i, (line, executed)) in line_iter.enumerate() {
             println!("{}", line);
+
             if let Some(caps) = input_re.captures(&line) {
                 let value = u32::from_str(caps.at(1).unwrap()).unwrap();
                 let bot = usize::from_str(caps.at(2).unwrap()).unwrap();
-
                 bots[bot].give(value);
+                lines[i].1 = true;
             }
         }
+
+        done = true;
     }
+
+    println!("{:?}", lines);
 
 
     // let f = File::open("input/day10.txt").unwrap();
