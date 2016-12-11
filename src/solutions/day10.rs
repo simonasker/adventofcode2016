@@ -57,7 +57,7 @@ fn part_one() {
 
      let mut bots: Vec<Bot> = Vec::new();
 
-     let num_bots = 3;
+     let num_bots = 210;
      for _ in 0..num_bots {
          bots.push(Bot::new());
      }
@@ -65,10 +65,19 @@ fn part_one() {
     let mut lines: Vec<(String, bool)> = reader.lines().map(|l| (l.unwrap(), false)).collect();
 
     let mut done = false;
+    let mut answer = 0;
     while !done {
+        done = true;
 
-        let mut line_iter = lines.clone().into_iter();
+        let line_iter = lines.clone().into_iter();
         for (i, (line, executed)) in line_iter.enumerate() {
+            if done && !executed {
+                done = false;
+            }
+            if executed {
+                continue;
+            }
+
             println!("{}", line);
 
             if let Some(caps) = input_re.captures(&line) {
@@ -77,38 +86,42 @@ fn part_one() {
                 bots[bot].give(value);
                 lines[i].1 = true;
             }
-        }
 
-        done = true;
+            if let Some(caps) = give_re.captures(&line) {
+                let bot = usize::from_str(caps.at(1).unwrap()).unwrap();
+
+                if bots[bot].values.len() < 2 {
+                    continue;
+                }
+
+                let low_val = bots[bot].take_low().unwrap();
+                let high_val = bots[bot].take_high().unwrap();
+
+                if low_val == 17 && high_val == 61 {
+                    println!("DONE: {}", bot);
+                    answer = bot;
+                }
+
+
+                let low_type = caps.at(2).unwrap();
+                let low = usize::from_str(caps.at(3).unwrap()).unwrap();
+                if low_type == "bot" {
+                    bots[low].give(low_val);
+                }
+
+                let high_type = caps.at(4).unwrap();
+                let high = usize::from_str(caps.at(5).unwrap()).unwrap();
+                if high_type == "bot" {
+                    bots[high].give(high_val);
+                }
+
+                lines[i].1 = true;
+            }
+        }
     }
 
-    println!("{:?}", lines);
+    println!("Answer: {}", answer);
 
-
-    // let f = File::open("input/day10.txt").unwrap();
-    // let reader = BufReader::new(f);
-    // for line in reader.lines() {
-    //     let line = line.unwrap();
-
-    //     if let Some(caps) = give_re.captures(&line) {
-    //         let bot = usize::from_str(caps.at(1).unwrap()).unwrap();
-
-    //         let low_val = bots[bot].take_low().unwrap();
-    //         let high_val = bots[bot].take_high().unwrap();
-
-    //         let low_type = caps.at(2).unwrap();
-    //         let low = usize::from_str(caps.at(3).unwrap()).unwrap();
-    //         if low_type == "bot" {
-    //             bots[low].give(low_val);
-    //         }
-
-    //         let high_type = caps.at(4).unwrap();
-    //         let high = usize::from_str(caps.at(5).unwrap()).unwrap();
-    //         if high_type == "bot" {
-    //             bots[high].give(high_val);
-    //         }
-    //     }
-    // }
 }
 
 fn part_two() {
