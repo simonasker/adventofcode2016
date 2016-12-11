@@ -66,6 +66,9 @@ fn part_one() {
 
     let mut done = false;
     let mut answer = 0;
+
+    let mut prod = 1;
+
     while !done {
         done = true;
 
@@ -107,12 +110,17 @@ fn part_one() {
                 let low = usize::from_str(caps.at(3).unwrap()).unwrap();
                 if low_type == "bot" {
                     bots[low].give(low_val);
+                } else if low <= 2 {
+                    prod *= low_val;
                 }
+
 
                 let high_type = caps.at(4).unwrap();
                 let high = usize::from_str(caps.at(5).unwrap()).unwrap();
                 if high_type == "bot" {
                     bots[high].give(high_val);
+                } else if high <= 2 {
+                    prod *= high_val;
                 }
 
                 lines[i].1 = true;
@@ -121,6 +129,7 @@ fn part_one() {
     }
 
     println!("Answer: {}", answer);
+    println!("Product: {}", prod);
 
 }
 
