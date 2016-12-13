@@ -11,7 +11,7 @@ pub fn run(part: i32) {
 }
 
 fn part_one() {
-    let f = File::open("input/day09.txt").unwrap();
+    let f = File::open("input/dayX.txt").unwrap();
     let reader = BufReader::new(f);
 
     for line in reader.lines() {
