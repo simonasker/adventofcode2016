@@ -20,18 +20,13 @@ fn part_one() {
         .map(|l| l.expect("Could not get line"))
         .collect();
 
-    let max: usize = instructions.len();
-    let mut ptr: usize = 0;
+    let max = instructions.len() as i32;
+    let mut ptr = 0;
 
     let mut register: HashMap<char, i32> = HashMap::new();
 
-    register.insert('a', 0);
-    register.insert('b', 0);
-    register.insert('c', 0);
-    register.insert('d', 0);
-
     loop {
-        let mut spl = instructions[ptr].split_whitespace();
+        let mut spl = instructions[ptr as usize].split_whitespace();
 
         let inst = spl
             .next().expect("There must be at least one word on each line");
@@ -46,6 +41,10 @@ fn part_one() {
                     .chars().nth(0).expect("The second argument is at least one character");
 
                 println!("CPY {} {}", val, reg);
+
+                let reg_val = register.entry(reg).or_insert(0);
+                *reg_val = val;
+
             },
             "inc" => {
                 let reg = spl
@@ -53,6 +52,9 @@ fn part_one() {
                     .chars().nth(0).expect("The argument to inc has length one");
 
                 println!("INC {}", reg);
+
+                let reg_val = register.entry(reg).or_insert(0);
+                *reg_val += 1;
             },
             "dec" => {
                 let reg = spl
@@ -60,6 +62,9 @@ fn part_one() {
                     .chars().nth(0).expect("The argument to dec has length one");
 
                 println!("DEC {}", reg);
+
+                let reg_val = register.entry(reg).or_insert(0);
+                *reg_val -= 1;
             },
             "jnz" => {
                 let reg = spl
@@ -70,6 +75,11 @@ fn part_one() {
                     .parse::<i32>().expect("The second argument to jnz is na int");
 
                 println!("JNZ {} {}", reg, val);
+
+                let reg_val = register.get(&reg).expect("There should be a value here");
+                if *reg_val != 0 {
+                    ptr += val;
+                }
             },
             _ => {
                 panic!("Invalid instruction");
