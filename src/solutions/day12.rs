@@ -24,6 +24,10 @@ fn part_one() {
     let mut ptr = 0;
 
     let mut register: HashMap<char, i32> = HashMap::new();
+    register.insert('a', 0);
+    register.insert('b', 0);
+    register.insert('c', 0);
+    register.insert('d', 0);
 
     loop {
         let mut spl = instructions[ptr as usize].split_whitespace();
@@ -33,67 +37,84 @@ fn part_one() {
 
         match inst {
             "cpy" => {
-                let val = spl
-                    .next().expect("cpy has a first argument")
-                    .parse::<i32>().expect("The first argument of cpy is an int");
+                let arg1 = spl
+                    .next().expect("cpy has a first argument");
+
                 let reg = spl
                     .next().expect("cpy has a second argument")
                     .chars().nth(0).expect("The second argument is at least one character");
 
-                println!("CPY {} {}", val, reg);
+                // println!("CPY {} {}", arg1, reg);
+
+                let mut new_val = 0;
+
+                if let Ok(v) = arg1.parse::<i32>() {
+                    new_val = v;
+                } else if let Some(other_reg) = arg1.chars().nth(0) {
+                    new_val = *register.get(&other_reg).expect("There should be a value here");
+                }
 
                 let reg_val = register.entry(reg).or_insert(0);
-                *reg_val = val;
-
+                *reg_val = new_val;
+                ptr += 1;
             },
             "inc" => {
                 let reg = spl
                     .next().expect("inc has one arguement")
                     .chars().nth(0).expect("The argument to inc has length one");
 
-                println!("INC {}", reg);
+                // println!("INC {}", reg);
 
                 let reg_val = register.entry(reg).or_insert(0);
                 *reg_val += 1;
+                ptr += 1;
             },
             "dec" => {
                 let reg = spl
                     .next().expect("dec has one argument")
                     .chars().nth(0).expect("The argument to dec has length one");
 
-                println!("DEC {}", reg);
+                // println!("DEC {}", reg);
 
                 let reg_val = register.entry(reg).or_insert(0);
                 *reg_val -= 1;
+                ptr += 1;
             },
             "jnz" => {
-                let reg = spl
-                    .next().expect("jnz has a first argument")
-                    .chars().nth(0).expect("The first argument to jnz has length one");
+                let arg1 = spl
+                    .next().expect("jnz has a first argument");
                 let val = spl
                     .next().expect("jnz has a second argument")
                     .parse::<i32>().expect("The second argument to jnz is na int");
 
-                println!("JNZ {} {}", reg, val);
+                // println!("JNZ {} {}", reg, val);
+                let mut new_val = 0;
 
-                let reg_val = register.get(&reg).expect("There should be a value here");
-                if *reg_val != 0 {
+                if let Ok(v) = arg1.parse::<i32>() {
+                    new_val = v;
+                } else if let Some(other_reg) = arg1.chars().nth(0) {
+                    new_val = *register.get(&other_reg).expect("There should be a value here");
+                }
+
+                if new_val != 0 {
                     ptr += val;
+                } else {
+                    ptr += 1;
                 }
             },
             _ => {
                 panic!("Invalid instruction");
             },
         }
+        print!("\r{:?}", register);
 
-        ptr += 1;
 
         if ptr >= max {
             break;
         }
     }
 
-    println!("{:?}", register);
+    println!("\n{:?}", register);
 }
 
 fn part_two() {
