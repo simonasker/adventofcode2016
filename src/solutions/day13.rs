@@ -36,13 +36,13 @@ fn neighbors(node: Node) -> Vec<Node> {
 fn part_one() {
 
     let mut distances: HashMap<Node, u32> = HashMap::new();
-    let mut parents: HashMap<Node, Option<Node>> = HashMap::new();
+    let mut parents: HashMap<Node, Node> = HashMap::new();
 
     for y in 0..40 {
         for x in 0..40 {
             if is_open(x, y) {
                 distances.insert((x, y), u32::max_value());
-                parents.insert((x, y), None);
+                //parents.insert((x, y), None);
             }
 
             // let sign = match is_open(x, y) {
@@ -63,11 +63,18 @@ fn part_one() {
 
     while !q.is_empty() {
         let current = q.pop().unwrap();
-        println!("current: {:?}", current);
         for n in neighbors(current) {
-            println!("n: {:?}", n);
+            let current_dist = distances.get(&current).unwrap().clone();
+            let dist = distances.get_mut(&n).unwrap();
+            if *dist == u32::max_value() {
+                *dist = current_dist + 1;
+                parents.insert(n, current);
+                q.insert(0, n);
+            }
         }
     }
+
+    println!("{:?}", distances.get(&(7, 4)));
 }
 
 fn part_two() {
