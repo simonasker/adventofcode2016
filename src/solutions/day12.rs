@@ -19,9 +19,39 @@ fn part_one() {
         .map(|l| l.expect("Could not get line"))
         .collect();
 
-    for instruction in instructions {
-        println!("{}", instruction);
+    let max: usize = instructions.len();
+    let mut ptr: usize = 0;
+
+    loop {
+        let mut spl = instructions[ptr].split_whitespace();
+
+        let inst = spl.next().unwrap();
+
+        match inst {
+            "cpy" => {
+                println!("CPY");
+            },
+            "inc" => {
+                println!("INC");
+            },
+            "dec" => {
+                println!("DEC");
+            },
+            "jnz" => {
+                println!("JNZ");
+            },
+            _ => {
+                panic!("Invalid instruction");
+            },
+        }
+
+        ptr += 1;
+
+        if ptr >= max {
+            break;
+        }
     }
+
 
 }
 
