@@ -26,6 +26,7 @@ fn part_one() {
     let mut register: HashMap<char, i32> = HashMap::new();
     register.insert('a', 0);
     register.insert('b', 0);
+    // Set this to 1 for solution to part 2
     register.insert('c', 0);
     register.insert('d', 0);
 
