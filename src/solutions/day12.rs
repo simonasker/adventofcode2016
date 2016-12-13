@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::collections::HashMap;
 
 pub fn run(part: i32) {
     match part {
@@ -22,23 +23,53 @@ fn part_one() {
     let max: usize = instructions.len();
     let mut ptr: usize = 0;
 
+    let mut register: HashMap<char, i32> = HashMap::new();
+
+    register.insert('a', 0);
+    register.insert('b', 0);
+    register.insert('c', 0);
+    register.insert('d', 0);
+
     loop {
         let mut spl = instructions[ptr].split_whitespace();
 
-        let inst = spl.next().unwrap();
+        let inst = spl
+            .next().expect("There must be at least one word on each line");
 
         match inst {
             "cpy" => {
-                println!("CPY");
+                let val = spl
+                    .next().expect("cpy has a first argument")
+                    .parse::<i32>().expect("The first argument of cpy is an int");
+                let reg = spl
+                    .next().expect("cpy has a second argument")
+                    .chars().nth(0).expect("The second argument is at least one character");
+
+                println!("CPY {} {}", val, reg);
             },
             "inc" => {
-                println!("INC");
+                let reg = spl
+                    .next().expect("inc has one arguement")
+                    .chars().nth(0).expect("The argument to inc has length one");
+
+                println!("INC {}", reg);
             },
             "dec" => {
-                println!("DEC");
+                let reg = spl
+                    .next().expect("dec has one argument")
+                    .chars().nth(0).expect("The argument to dec has length one");
+
+                println!("DEC {}", reg);
             },
             "jnz" => {
-                println!("JNZ");
+                let reg = spl
+                    .next().expect("jnz has a first argument")
+                    .chars().nth(0).expect("The first argument to jnz has length one");
+                let val = spl
+                    .next().expect("jnz has a second argument")
+                    .parse::<i32>().expect("The second argument to jnz is na int");
+
+                println!("JNZ {} {}", reg, val);
             },
             _ => {
                 panic!("Invalid instruction");
@@ -52,7 +83,7 @@ fn part_one() {
         }
     }
 
-
+    println!("{:?}", register);
 }
 
 fn part_two() {
