@@ -37,20 +37,13 @@ fn part_one() {
     let mut distances: HashMap<Node, u32> = HashMap::new();
     let mut parents: HashMap<Node, Node> = HashMap::new();
 
-    for y in 0..50 {
-        for x in 0..50 {
+
+    for y in 0..51 {
+        for x in 0..51 {
             if is_open(x, y) {
                 distances.insert((x, y), u32::max_value());
-                //parents.insert((x, y), None);
             }
-
-            // let sign = match is_open(x, y) {
-            //     true => '.',
-            //     false => '#',
-            // };
-            // print!("{}", sign);
         }
-        // print!("\n");
     }
 
     let mut q: Vec<Node> = Vec::new();
@@ -74,7 +67,16 @@ fn part_one() {
         }
     }
 
+    let mut locations_under_50 = 0;
+
+    for dist in distances.values() {
+        if *dist <= 50 {
+            locations_under_50 += 1;
+        }
+    }
+
     println!("Shortest distance: {}", distances.get(&(31, 39)).unwrap());
+    println!("Locations nearer than 50 steps: {}", locations_under_50);
 }
 
 fn part_two() {
