@@ -10,8 +10,7 @@ pub fn run(part: i32) {
 
 type Node = (u32, u32);
 
-// const INPUT: u32 = 1362;
-const INPUT: u32 = 10;
+const INPUT: u32 = 1362;
 
 fn is_open(x: u32, y: u32) -> bool {
     let f = x*x + 3*x + 2*x*y + y + y*y + INPUT;
@@ -38,8 +37,8 @@ fn part_one() {
     let mut distances: HashMap<Node, u32> = HashMap::new();
     let mut parents: HashMap<Node, Node> = HashMap::new();
 
-    for y in 0..40 {
-        for x in 0..40 {
+    for y in 0..50 {
+        for x in 0..50 {
             if is_open(x, y) {
                 distances.insert((x, y), u32::max_value());
                 //parents.insert((x, y), None);
@@ -65,16 +64,17 @@ fn part_one() {
         let current = q.pop().unwrap();
         for n in neighbors(current) {
             let current_dist = distances.get(&current).unwrap().clone();
-            let dist = distances.get_mut(&n).unwrap();
-            if *dist == u32::max_value() {
-                *dist = current_dist + 1;
-                parents.insert(n, current);
-                q.insert(0, n);
+            if let Some(dist) = distances.get_mut(&n) {
+                if *dist == u32::max_value() {
+                    *dist = current_dist + 1;
+                    parents.insert(n, current);
+                    q.insert(0, n);
+                }
             }
         }
     }
 
-    println!("{:?}", distances.get(&(7, 4)));
+    println!("Shortest distance: {}", distances.get(&(31, 39)).unwrap());
 }
 
 fn part_two() {
