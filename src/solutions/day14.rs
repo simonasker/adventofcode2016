@@ -17,10 +17,10 @@ pub fn run(part: i32) {
 const INPUT: &'static str = "abc";
 
 fn part_one() {
-    let mut potential: HashMap<char, u32> = HashMap::new();
+    let mut potential: HashMap<char, Vec<u32>> = HashMap::new();
     let mut found_keys: u32 = 0;
 
-    for n in 0..22730 {
+    for n in 0..22729 {
         let mut hasher = Md5::new();
         let foo = format!("{}{}", INPUT, n);
         hasher.input_str(&foo);
@@ -37,43 +37,33 @@ fn part_one() {
             }
 
             if num == 3 {
-                let mut add = false;
-                match potential.get(&c) {
-                    None => {
-                        add = true;
-                    },
-                    Some(cnt) => {
-                        if *cnt == 0 {
-                            add = true;
-                        }
-                    },
-                }
-
-                if add {
-                    potential.insert(c, 1000);
-                }
+                let vec = potential.entry(c).or_insert(Vec::new());
+                vec.push(1000);
             }
 
             if num == 5 {
-                if let Some(cnt) = potential.get(&c) {
-                    if *cnt > 0 {
-                        print!("{}: ", foo);
-                        println!("{}", hash);
+                let vec = potential.get_mut(&c).expect("There must be a vector for this value");
+                for val in vec.iter_mut() {
+                    if *val > 0 {
                         found_keys += 1;
+                        *val = 0;
                     }
                 }
             }
             prev = c.clone();
         }
 
-        for val in potential.values_mut() {
-            if *val > 0 {
-                *val -= 1;
+        for vec in potential.values_mut() {
+            for val in vec.iter_mut() {
+                if *val > 0 {
+                    *val -= 1;
+                }
             }
         }
     }
 
     println!("Found keys: {}", found_keys);
+    // println!("{:?}", potential);
 }
 
 fn part_two() {
