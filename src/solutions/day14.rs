@@ -20,8 +20,25 @@ fn part_one() {
         let foo = format!("{}{}", INPUT, n);
         hasher.input_str(&foo);
         let hash = hasher.result_str();
+
         print!("{}: ", foo);
         println!("{}", hash);
+
+        let mut prev = '-';
+        let mut num = 0;
+        for c in hash.chars() {
+            if c == prev {
+                num += 1;
+            } else {
+                num = 1;
+            }
+
+            if num == 3 {
+                println!("FOUND A TRIPLET");
+            }
+            prev = c.clone();
+        }
+        print!("\n");
     }
 }
 
