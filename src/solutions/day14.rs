@@ -13,7 +13,7 @@ pub fn run(part: i32) {
     }
 }
 
-// const INPUT: &'static str = "zpeqevtbw";
+// const INPUT: &'static str = "zpqevtbw";
 const INPUT: &'static str = "abc";
 
 fn part_one() {
@@ -23,29 +23,34 @@ fn part_one() {
     let mut found_keys = 0;
 
     'outer: for n in 0.. {
+        for val in ind_to_ctr.values_mut() {
+            if *val > 0 {
+                *val -= 1;
+            }
+        }
+
         let mut hasher = Md5::new();
         let foo = format!("{}{}", INPUT, n);
         hasher.input_str(&foo);
         let hash = hasher.result_str();
 
-        let mut char_iter = hash.chars().peekable();
+        let mut char_iter = hash.chars();
 
         let mut num = 0;
         let mut prev = '-';
 
+        let mut found_three = false;
+
         while let Some(c) = char_iter.next() {
             if c == prev { num += 1; } else { num = 1; }
 
-            let mut next = '-';
-            if let Some(cn) = char_iter.peek() {
-                next = *cn;
-            }
 
-            if (num == 3 && c != next) || (num == 4 && c != next) {
+            if !found_three && num == 3 {
                 // println!("TRIPLE: {} {}", foo, hash);
                 char_to_ind.entry(c).or_insert(Vec::new()).push(n);
                 ind_to_ctr.insert(n, 1000);
-                break;
+
+                found_three = true;
             }
 
             if num == 5 {
@@ -53,6 +58,9 @@ fn part_one() {
                 if let Some(indices) = char_to_ind.get(&c) {
                     // println!("{:?}", indices);
                     for i in indices {
+                        if i == &n {
+                            continue;
+                        }
                         let ctr = ind_to_ctr.get_mut(&i).unwrap();
                         if *ctr > 0 {
                             found_keys += 1;
@@ -66,20 +74,12 @@ fn part_one() {
                         }
                     }
                 }
-                char_to_ind.entry(c).or_insert(Vec::new()).push(n);
-                ind_to_ctr.insert(n, 1000);
-                break;
             }
 
 
             prev = c.clone();
         }
 
-        for val in ind_to_ctr.values_mut() {
-            if *val > 0 {
-                *val -= 1;
-            }
-        }
     }
 
     println!("Found keys: {}", found_keys);
