@@ -20,12 +20,13 @@ fn part_one() {
     let mut char_to_ind: HashMap<char, Vec<u32>> = HashMap::new();
     let mut ind_to_ctr: HashMap<u32, u32> = HashMap::new();
 
-    'outer: for n in 0..201 {
+    let mut found_keys = 0;
+
+    'outer: for n in 0.. {
         let mut hasher = Md5::new();
         let foo = format!("{}{}", INPUT, n);
         hasher.input_str(&foo);
         let hash = hasher.result_str();
-        println!("{}: {}", foo, hash);
 
         let mut char_iter = hash.chars().peekable();
 
@@ -41,14 +42,30 @@ fn part_one() {
             }
 
             if (num == 3 && c != next) || (num == 4 && c != next) {
-                println!("FOUND TRIPLE");
+                println!("TRIPLE: {} {}", foo, hash);
                 char_to_ind.entry(c).or_insert(Vec::new()).push(n);
                 ind_to_ctr.insert(n, 1000);
                 break;
             }
 
             if num == 5 {
-                println!("FOUND QUINTUPLE");
+                println!("QUINTE: {} {}", foo, hash);
+                if let Some(indices) = char_to_ind.get(&c) {
+                    println!("{:?}", indices);
+                    for i in indices {
+                        let ctr = ind_to_ctr.get_mut(&i).unwrap();
+                        if *ctr > 0 {
+                            found_keys += 1;
+                            println!("FOUND KEY: {} ({})", found_keys, i);
+                            // Reset the counter to avoid counting a key twice
+                            *ctr = 0;
+
+                            if found_keys == 64 {
+                                break 'outer;
+                            }
+                        }
+                    }
+                }
                 break;
             }
 
@@ -63,8 +80,7 @@ fn part_one() {
         }
     }
 
-    println!("{:?}", char_to_ind);
-    println!("{:?}", ind_to_ctr);
+    println!("Found keys: {}", found_keys);
 }
 
 
