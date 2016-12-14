@@ -11,6 +11,7 @@ mod day10;
 mod day11;
 mod day12;
 mod day13;
+mod day14;
 
 pub fn run(day: i32, part: i32) {
     match day {
@@ -27,6 +28,7 @@ pub fn run(day: i32, part: i32) {
         11 => day11::run(part),
         12 => day12::run(part),
         13 => day13::run(part),
+        14 => day14::run(part),
         d @ _ => println!("Day {} is not yet implemented", d),
     }
 }
