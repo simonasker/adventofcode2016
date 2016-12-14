@@ -42,7 +42,7 @@ fn part_one() {
             }
 
             if (num == 3 && c != next) || (num == 4 && c != next) {
-                println!("TRIPLE: {} {}", foo, hash);
+                // println!("TRIPLE: {} {}", foo, hash);
                 char_to_ind.entry(c).or_insert(Vec::new()).push(n);
                 ind_to_ctr.insert(n, 1000);
                 break;
@@ -51,7 +51,7 @@ fn part_one() {
             if num == 5 {
                 println!("QUINTE: {} {}", foo, hash);
                 if let Some(indices) = char_to_ind.get(&c) {
-                    println!("{:?}", indices);
+                    // println!("{:?}", indices);
                     for i in indices {
                         let ctr = ind_to_ctr.get_mut(&i).unwrap();
                         if *ctr > 0 {
@@ -66,6 +66,8 @@ fn part_one() {
                         }
                     }
                 }
+                char_to_ind.entry(c).or_insert(Vec::new()).push(n);
+                ind_to_ctr.insert(n, 1000);
                 break;
             }
 
