@@ -1,5 +1,7 @@
 extern crate crypto;
 
+use std::collections::HashMap;
+
 use self::crypto::md5::Md5;
 use self::crypto::digest::Digest;
 
@@ -15,14 +17,16 @@ pub fn run(part: i32) {
 const INPUT: &'static str = "abc";
 
 fn part_one() {
-    for n in 0..20 {
+    let mut potential: HashMap<char, u32> = HashMap::new();
+
+    for n in 0..100 {
         let mut hasher = Md5::new();
         let foo = format!("{}{}", INPUT, n);
         hasher.input_str(&foo);
         let hash = hasher.result_str();
 
-        print!("{}: ", foo);
-        println!("{}", hash);
+        // print!("{}: ", foo);
+        // println!("{}", hash);
 
         let mut prev = '-';
         let mut num = 0;
@@ -34,12 +38,13 @@ fn part_one() {
             }
 
             if num == 3 {
-                println!("FOUND A TRIPLET");
+                potential.insert(c, 1000);
             }
             prev = c.clone();
         }
-        print!("\n");
     }
+
+    println!("{:?}", potential);
 }
 
 fn part_two() {
