@@ -27,15 +27,16 @@ fn dragon(input: &str) -> String {
 }
 
 fn part_one() {
-    // let disk_size = 20;
-    let disk_size = 272;
-    // let mut input = String::from("10000");
-    let mut input = String::from("01111001100111011");
+    // let disk_size = 20; // example disk size
+    // let disk_size = 272; // part 1
+    let disk_size = 35651584; // part 2
+
+    // let mut input = String::from("10000"); // example input
+    let mut input = String::from("01111001100111011"); // real input
 
     println!("- Dragon curve");
     loop {
         input = dragon(&input);
-        println!("{}", input);
 
         if input.len() > disk_size {
             break;
@@ -44,7 +45,6 @@ fn part_one() {
 
     println!("- Truncate to {}", disk_size);
     input.truncate(disk_size);
-    println!("{}", input);
 
     println!("- Generate checksums");
     loop {
@@ -68,8 +68,6 @@ fn part_one() {
                 }
             }
         }
-
-        println!("{}", checksum);
 
         if checksum.len() % 2 != 0 {
             println!("- Final result: {}", checksum);
