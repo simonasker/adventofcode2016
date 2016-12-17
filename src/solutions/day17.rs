@@ -13,6 +13,12 @@ pub fn run(part: i32) {
     }
 }
 
+// const INPUT: &'static str = "ihgpwlah"; // DDRRRD
+// const INPUT: &'static str = "kglvqrro"; // DDUDRLRRUDRD
+// const INPUT: &'static str = "ulqzkmiv"; // DRURDRUDDLLDLUURRDULRLDUUDDDRR
+
+const INPUT: &'static str = "vwbaicqe";
+
 fn find_room(path: &str) -> Option<(i32, i32)> {
     let mut room_x = 0;
     let mut room_y = 0;
@@ -38,6 +44,26 @@ fn find_room(path: &str) -> Option<(i32, i32)> {
     Some((room_x, room_y))
 }
 
+fn open_char(c: char) -> bool {
+    !(c == 'a' || c.is_digit(10))
+}
+
+fn door_is_open(path: &str, dir: &str) -> bool {
+    let hash_input = format!("{}{}", INPUT, path);
+
+    let mut hasher = Md5::new();
+    hasher.input_str(&hash_input);
+    let hash = hasher.result_str();
+
+    match dir {
+        "U" => return open_char(hash.chars().nth(0).unwrap()),
+        "D" => return open_char(hash.chars().nth(1).unwrap()),
+        "L" => return open_char(hash.chars().nth(2).unwrap()),
+        "R" => return open_char(hash.chars().nth(3).unwrap()),
+        _ => panic!("Invalid direction"),
+    }
+}
+
 
 fn neighbors(path: &str) -> Vec<String> {
     let mut result = Vec::new();
@@ -46,44 +72,28 @@ fn neighbors(path: &str) -> Vec<String> {
         let new_path = format!("{}{}", path, dir);
 
         if let Some(_) = find_room(&new_path) {
-            result.push(new_path);
+            if door_is_open(path, dir) {
+                result.push(new_path);
+            }
         }
     }
     result
 }
 
 fn part_one() {
-    // let input = "ihgpwlah";
-    let input = "hijkl";
-
-    // let mut distances: HashMap<Node, u32> = HashMap::new();
-    // let mut parents: HashMap<Node, Node> = HashMap::new();
-
-
-    let path = String::new();
-    let hash_input = format!("{}{}", input, path);
-    let mut hasher = Md5::new();
-    hasher.input_str(&hash_input);
-    let mut hash = hasher.result_str();
-
-
-    hash.truncate(4);
-
-    println!("{}", hash);
-
-    // let start = (1, 1);
-
     let start = String::from("");
 
     let mut q: Vec<String> = Vec::new();
-    // distances.insert(start, 0);
     q.insert(0, start);
 
     while !q.is_empty() {
         let current = q.pop().unwrap();
+
         println!("{}", current);
-        if find_room(&current) == Some((4, 4)) {
+
+        if find_room(&current) == Some((3, 3)) {
             println!("Valid path: {}", current);
+            break;
         }
 
         for n in neighbors(&current) {
@@ -91,10 +101,14 @@ fn part_one() {
         }
     }
 
-    println!("{:?}", find_room("RRDDD"));
-    println!("{:?}", find_room("RRDDDD"));
 }
 
 fn part_two() {
-    println!("Not yet implemented");
+    println!("{:?}", find_room("RRDDD"));
+    println!("{:?}", find_room("DDRRRD"));
+
+    println!("{:?}", door_is_open("", "U"));
+    println!("{:?}", door_is_open("", "D"));
+    println!("{:?}", door_is_open("", "L"));
+    println!("{:?}", door_is_open("", "R"));
 }
