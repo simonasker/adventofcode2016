@@ -28,12 +28,22 @@ fn dragon(input: &str) -> String {
 
 fn part_one() {
     let disk_size = 20;
-    let input = "10000";
+    let mut input = String::from("10000");
 
-    println!("{}", dragon("1"));
-    println!("{}", dragon("0"));
-    println!("{}", dragon("11111"));
-    println!("{}", dragon("111100001010"));
+    println!("- Dragon curve");
+    loop {
+        input = dragon(&input);
+        println!("{}", input);
+
+        if input.len() > disk_size {
+            break;
+        }
+    }
+
+    println!("- Truncate to {}", disk_size);
+    input.truncate(disk_size);
+
+    println!("{}", input);
 }
 
 fn part_two() {
