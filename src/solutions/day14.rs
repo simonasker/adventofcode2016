@@ -13,8 +13,8 @@ pub fn run(part: i32) {
     }
 }
 
-// const INPUT: &'static str = "zpqevtbw";
-const INPUT: &'static str = "abc";
+const INPUT: &'static str = "zpqevtbw";
+// const INPUT: &'static str = "abc";
 
 fn part_one() {
     let mut char_to_ind: HashMap<char, Vec<u32>> = HashMap::new();
@@ -48,21 +48,16 @@ fn part_one() {
             if !found_three && num == 3 {
                 // println!("TRIPLE: {} {}", foo, hash);
                 char_to_ind.entry(c).or_insert(Vec::new()).push(n);
-                ind_to_ctr.insert(n, 1000);
+                ind_to_ctr.insert(n, 1001);
 
                 found_three = true;
             }
 
             if num == 5 {
-                println!("QUINTE: {} {}", foo, hash);
                 if let Some(indices) = char_to_ind.get(&c) {
-                    // println!("{:?}", indices);
                     for i in indices {
-                        if i == &n {
-                            continue;
-                        }
                         let ctr = ind_to_ctr.get_mut(&i).unwrap();
-                        if *ctr > 0 {
+                        if *ctr > 0 && *ctr <= 1000 {
                             found_keys += 1;
                             println!("FOUND KEY: {} ({})", found_keys, i);
                             // Reset the counter to avoid counting a key twice
@@ -75,7 +70,6 @@ fn part_one() {
                     }
                 }
             }
-
 
             prev = c.clone();
         }
