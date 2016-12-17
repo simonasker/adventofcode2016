@@ -13,10 +13,13 @@ pub fn run(part: i32) {
     }
 }
 
-// const INPUT: &'static str = "ihgpwlah"; // DDRRRD
-// const INPUT: &'static str = "kglvqrro"; // DDUDRLRRUDRD
-// const INPUT: &'static str = "ulqzkmiv"; // DRURDRUDDLLDLUURRDULRLDUUDDDRR
+// const INPUT: &'static str = "ihgpwlah"; // shortest: DDRRRD, longest: 370
+// const INPUT: &'static str = "kglvqrro"; // shortest: DDUDRLRRUDRD, longest: 492
 
+// shortest: DRURDRUDDLLDLUURRDULRLDUUDDDRR: longest:830
+// const INPUT: &'static str = "ulqzkmiv";
+
+// Real input
 const INPUT: &'static str = "vwbaicqe";
 
 fn find_room(path: &str) -> Option<(i32, i32)> {
@@ -68,6 +71,10 @@ fn door_is_open(path: &str, dir: &str) -> bool {
 fn neighbors(path: &str) -> Vec<String> {
     let mut result = Vec::new();
 
+    if find_room(&path) == Some((3, 3)) {
+        return result;
+    }
+
     for dir in vec!["U", "D", "L", "R"] {
         let new_path = format!("{}{}", path, dir);
 
@@ -89,11 +96,13 @@ fn part_one() {
     while !q.is_empty() {
         let current = q.pop().unwrap();
 
-        println!("{}", current);
-
         if find_room(&current) == Some((3, 3)) {
-            println!("Valid path: {}", current);
-            break;
+            // Part 1: Print first valid path and break
+            // println!("Valid path: {}", current);
+            // break;
+
+            // Part 2: Try all paths and print the lengths of the valid ones
+            println!("Valid path length: {}", current.len());
         }
 
         for n in neighbors(&current) {
