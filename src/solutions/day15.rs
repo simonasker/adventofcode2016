@@ -6,13 +6,12 @@ pub fn run(part: i32) {
     }
 }
 
-const NUMBER_OF_DISCS: usize = 7;
+// TODO Remove the last disc for solution to part 1
+const NUMBER_OF_DISCS: usize = 8;
 
 fn part_one() {
-    // let start_position = [0, 4, 1];
-    // let positions = [1, 5, 2];
-    let start_position = [0, 1, 0, 2, 0, 0, 5];
-    let positions = [1, 17, 7, 19, 5, 3, 13];
+    let start_position = [0, 1, 0, 2, 0, 0, 5, 0];
+    let positions = [1, 17, 7, 19, 5, 3, 13, 11];
 
     'start_time: for start_time in 0.. {
 
