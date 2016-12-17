@@ -29,12 +29,16 @@ fn part_one() {
             }
         }
 
-        let mut hasher = Md5::new();
-        let foo = format!("{}{}", INPUT, n);
-        hasher.input_str(&foo);
-        let hash = hasher.result_str();
+        let mut hash_input = format!("{}{}", INPUT, n);
 
-        let mut char_iter = hash.chars();
+        // TODO Only do the hashing once for solution to part 1
+        for _ in 0..2017 {
+            let mut hasher = Md5::new();
+            hasher.input_str(&hash_input);
+            hash_input = hasher.result_str();
+        }
+
+        let mut char_iter = hash_input.chars();
 
         let mut num = 0;
         let mut prev = '-';
