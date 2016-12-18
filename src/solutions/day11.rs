@@ -1,7 +1,3 @@
-use std::fs::File;
-use std::io::BufReader;
-use std::io::prelude::*;
-
 pub fn run(part: i32) {
     match part {
         1 => part_one(),
@@ -10,13 +6,35 @@ pub fn run(part: i32) {
     }
 }
 
-fn part_one() {
-    let f = File::open("input/day09.txt").unwrap();
-    let reader = BufReader::new(f);
+const STATE_ENTRIES: usize = 5;
 
-    for line in reader.lines() {
-        let line = line.unwrap();
-        println!("{}", line);
+type State = [u32; STATE_ENTRIES];
+
+fn is_valid(state: [u32; STATE_ENTRIES]) -> bool {
+    true
+}
+
+fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
+    let mut result = Vec::new();
+
+    result
+}
+
+fn part_one() {
+
+    let start = [0, 1, 0, 2, 0];
+
+    let mut q: Vec<State> = Vec::new();
+    q.insert(0, start);
+
+    while !q.is_empty() {
+        let current = q.pop().unwrap();
+
+        println!("{:?}", current);
+
+        for n in neighbors(current) {
+            q.insert(0, n);
+        }
     }
 }
 
