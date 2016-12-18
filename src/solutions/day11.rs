@@ -38,17 +38,19 @@ fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
 
     let elevator = state[0];
 
-    for i in 1..STATE_ENTRIES {
-        if state[i] == elevator {
-            let mut new_state = state.clone();
-            new_state[0] += 1;
-            new_state[i] += 1;
-            state_set.insert(new_state);
-            for j in 1..STATE_ENTRIES {
-                if new_state[j] == elevator {
-                    let mut new_state_2 = new_state.clone();
-                    new_state_2[j] += 1;
-                    state_set.insert(new_state_2);
+    if elevator < 3 {
+        for i in 1..STATE_ENTRIES {
+            if state[i] == elevator {
+                let mut new_state = state.clone();
+                new_state[0] += 1;
+                new_state[i] += 1;
+                state_set.insert(new_state);
+                for j in 1..STATE_ENTRIES {
+                    if new_state[j] == elevator {
+                        let mut new_state_2 = new_state.clone();
+                        new_state_2[j] += 1;
+                        state_set.insert(new_state_2);
+                    }
                 }
             }
         }
