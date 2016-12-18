@@ -21,7 +21,7 @@ fn is_done(state: State) -> bool {
     true
 }
 
-fn is_valid(state: [u32; STATE_ENTRIES]) -> bool {
+fn is_valid(state: State) -> bool {
     let mut i = 2;
     while i < STATE_ENTRIES {
 
@@ -42,7 +42,7 @@ fn is_valid(state: [u32; STATE_ENTRIES]) -> bool {
     true
 }
 
-fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
+fn neighbors(state: State) -> Vec<State> {
     let mut state_set = HashSet::new();
 
     let elevator = state[0];
