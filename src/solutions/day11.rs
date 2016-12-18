@@ -13,6 +13,23 @@ const STATE_ENTRIES: usize = 5;
 type State = [u32; STATE_ENTRIES];
 
 fn is_valid(state: [u32; STATE_ENTRIES]) -> bool {
+    let mut i = 2;
+    while i < STATE_ENTRIES {
+
+        // If microchip doesn't have it's generator
+        if state[i] != state[i-1] {
+
+            let mut j = 1;
+            while j < STATE_ENTRIES {
+                if state[j] == state[i] {
+                    return false;
+                }
+                j += 2;
+            }
+
+        }
+        i += 2;
+    }
     true
 }
 
