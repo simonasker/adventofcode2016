@@ -12,6 +12,15 @@ const STATE_ENTRIES: usize = 5;
 
 type State = [u32; STATE_ENTRIES];
 
+fn is_done(state: State) -> bool {
+    for i in 1..STATE_ENTRIES {
+        if state[i] != 3 {
+            return false;
+        }
+    }
+    true
+}
+
 fn is_valid(state: [u32; STATE_ENTRIES]) -> bool {
     let mut i = 2;
     while i < STATE_ENTRIES {
@@ -61,13 +70,13 @@ fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
         for i in 1..STATE_ENTRIES {
             if state[i] == elevator {
                 let mut new_state = state.clone();
-                new_state[0] += 1;
-                new_state[i] += 1;
+                new_state[0] -= 1;
+                new_state[i] -= 1;
                 state_set.insert(new_state);
                 for j in 1..STATE_ENTRIES {
                     if new_state[j] == elevator {
                         let mut new_state_2 = new_state.clone();
-                        new_state_2[j] += 1;
+                        new_state_2[j] -= 1;
                         state_set.insert(new_state_2);
                     }
                 }
@@ -83,19 +92,32 @@ fn part_one() {
 
     let start = [0, 1, 0, 2, 0];
 
+    let mut visited: HashSet<State> = HashSet::new();
+
     let mut q: Vec<State> = Vec::new();
     q.insert(0, start);
 
+    let mut iterations = 0;
+
     while !q.is_empty() {
+        println!("it: {}", iterations);
         let current = q.pop().unwrap();
 
+        visited.insert(current);
+
         println!("{:?}", current);
-        println!("-------------");
+        if is_done(current) {
+            println!("DONE");
+            break;
+        }
 
         for n in neighbors(current) {
-            println!("{:?}", n);
-            // q.insert(0, n);
+            if !visited.contains(&n) {
+                q.insert(0, n);
+            }
         }
+
+        iterations += 1;
     }
 }
 
