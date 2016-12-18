@@ -8,7 +8,8 @@ pub fn run(part: i32) {
     }
 }
 
-const STATE_ENTRIES: usize = 5;
+// const STATE_ENTRIES: usize = 5; // Example input
+const STATE_ENTRIES: usize = 11;
 
 type State = [u32; STATE_ENTRIES];
 
@@ -90,7 +91,8 @@ fn neighbors(state: State) -> Vec<State> {
 
 fn part_one() {
 
-    let start = [0, 1, 0, 2, 0];
+    // let start = [0, 1, 0, 2, 0]; // Example input
+    let start = [0, 0, 0, 2, 1, 2, 1, 2, 1, 2, 1];
 
     let mut visited: HashSet<State> = HashSet::new();
 
