@@ -20,10 +20,12 @@ fn part_one() {
     let mut map: Vec<String> = Vec::new();
 
     let size = input.len();
+    let rows = 400_000;
 
     map.push(input.clone());
 
-    for _ in 0..39 {
+    for r in 0..rows-1 {
+        println!("{}", r);
         let mut chars: Vec<char> = input.chars().collect();
         chars.insert(0, '.');
         chars.push('.');
@@ -47,8 +49,9 @@ fn part_one() {
 
 
     let mut safe_tiles = 0;
-    for row in map {
-        println!("{}", row);
+    for (r, row) in map.iter().enumerate() {
+        println!("{}", r);
+        // println!("{:3} {}", r, row);
         for c in row.chars() {
             if c == '.' {
                 safe_tiles += 1;
