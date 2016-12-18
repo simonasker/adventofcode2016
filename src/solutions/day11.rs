@@ -56,9 +56,8 @@ fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
         }
     }
 
-    // TODO Filter on valid states
     // TODO Would be nicer to return an iterator directly
-    state_set.into_iter().collect()
+    state_set.into_iter().filter(|s| is_valid(*s)).collect()
 }
 
 fn part_one() {
