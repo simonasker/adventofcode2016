@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 pub fn run(part: i32) {
     match part {
         1 => part_one(),
@@ -15,9 +17,29 @@ fn is_valid(state: [u32; STATE_ENTRIES]) -> bool {
 }
 
 fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
-    let mut result = Vec::new();
+    let mut state_set = HashSet::new();
 
-    result
+    let elevator = state[0];
+
+    for i in 1..STATE_ENTRIES {
+        if state[i] == elevator {
+            let mut new_state = state.clone();
+            new_state[0] += 1;
+            new_state[i] += 1;
+            state_set.insert(new_state);
+            for j in 1..STATE_ENTRIES {
+                if new_state[j] == elevator {
+                    let mut new_state_2 = new_state.clone();
+                    new_state_2[j] += 1;
+                    state_set.insert(new_state_2);
+                }
+            }
+        }
+    }
+
+    // TODO Filter on valid states
+    // TODO Would be nicer to return an iterator directly
+    state_set.into_iter().collect()
 }
 
 fn part_one() {
@@ -31,9 +53,11 @@ fn part_one() {
         let current = q.pop().unwrap();
 
         println!("{:?}", current);
+        println!("-------------");
 
         for n in neighbors(current) {
-            q.insert(0, n);
+            println!("{:?}", n);
+            // q.insert(0, n);
         }
     }
 }
