@@ -94,26 +94,26 @@ fn part_one() {
 
     let mut visited: HashSet<State> = HashSet::new();
 
-    let mut q: Vec<State> = Vec::new();
-    q.insert(0, start);
+    let mut q: Vec<(u32, State)> = Vec::new();
+    q.insert(0, (0, start));
 
     let mut iterations = 0;
 
     while !q.is_empty() {
         println!("it: {}", iterations);
-        let current = q.pop().unwrap();
+        let (steps, current) = q.pop().unwrap();
 
         visited.insert(current);
 
         println!("{:?}", current);
         if is_done(current) {
-            println!("DONE");
+            println!("DONE in {} steps", steps);
             break;
         }
 
         for n in neighbors(current) {
             if !visited.contains(&n) {
-                q.insert(0, n);
+                q.insert(0, (steps+1, n));
             }
         }
 
