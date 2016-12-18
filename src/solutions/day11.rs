@@ -37,6 +37,25 @@ fn neighbors(state: [u32; STATE_ENTRIES]) -> Vec<[u32; STATE_ENTRIES]> {
         }
     }
 
+    // TODO Fucking ugly way to handle going down as well
+    if elevator > 0 {
+        for i in 1..STATE_ENTRIES {
+            if state[i] == elevator {
+                let mut new_state = state.clone();
+                new_state[0] += 1;
+                new_state[i] += 1;
+                state_set.insert(new_state);
+                for j in 1..STATE_ENTRIES {
+                    if new_state[j] == elevator {
+                        let mut new_state_2 = new_state.clone();
+                        new_state_2[j] += 1;
+                        state_set.insert(new_state_2);
+                    }
+                }
+            }
+        }
+    }
+
     // TODO Filter on valid states
     // TODO Would be nicer to return an iterator directly
     state_set.into_iter().collect()
