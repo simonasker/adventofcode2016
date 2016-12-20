@@ -9,8 +9,10 @@ pub fn run(part: i32) {
 }
 
 const ELVES: i32 = 3018458;
+//const ELVES: i32 = 5;
 
 fn part_one() {
+    let mut elves_left = ELVES;
 
     let mut presents: HashMap<i32, i32> = HashMap::new();
 
@@ -20,6 +22,7 @@ fn part_one() {
 
     let mut i = 0;
     loop {
+        println!("{}", elves_left);
         match presents.get(&i) {
             None => { },
             Some(&0) => { },
@@ -28,10 +31,16 @@ fn part_one() {
                 break;
             },
             Some(_) => {
-                let mut next_elf = (i + 1) % ELVES;
 
-                while let Some(&0) = presents.get(&next_elf) {
+                let mut steps = elves_left / 2;
+                let mut next_elf = i;
+
+                while steps > 0 {
                     next_elf = (next_elf + 1) % ELVES;
+
+                    if presents.get(&next_elf).unwrap_or(&0) > &0 {
+                        steps -= 1;
+                    }
                 }
 
                 let mut num_presents;
@@ -40,6 +49,7 @@ fn part_one() {
                     let next = presents.get_mut(&next_elf).unwrap();
                     num_presents = *next;
                     *next = 0;
+                    elves_left -= 1;
                 }
 
                 let current = presents.get_mut(&i).unwrap();
@@ -49,7 +59,6 @@ fn part_one() {
 
         i = (i + 1) % ELVES;
     }
-
 }
 
 fn part_two() {
