@@ -20,7 +20,19 @@ fn part_one() {
 }
 
 fn part_two() {
-    let input = 3018458;
+    // let input = 3018458;
+
+    for i in 1..100 {
+        let res = get_last_elf(i);
+        println!("{} -> {}: ({})", i, res, res-i);
+    }
+
+    println!("test: {}", 4/2);
+    println!("test: {}", 5/2);
+    println!("test: {}", 6/2);
+
+    // let answer = get_last_elf(input);
+    // println!("Answer: {}", answer);
 }
 
 fn get_last_elf(num_elves: i32) -> i32 {
@@ -32,14 +44,12 @@ fn get_last_elf(num_elves: i32) -> i32 {
 
     let mut i = 0;
     loop {
-        // println!("{:?}", elves);
-        // println!("Index: {}", i);
         if elves.len() == 1 {
             break;
         }
 
-        let next = (i + 1) % elves.len();
-        // println!("Removing elves[{}]: {}", next, elves[next]);
+        // let next = (i + 1) % elves.len();
+        let next = (i + elves.len() / 2) % elves.len();
         elves.remove(next);
 
         if i == elves.len() {
@@ -47,7 +57,6 @@ fn get_last_elf(num_elves: i32) -> i32 {
         }
 
         i = (i + 1) % elves.len();
-
     }
 
     elves[0]
