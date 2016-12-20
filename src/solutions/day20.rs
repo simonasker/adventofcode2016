@@ -25,13 +25,24 @@ fn part_one() {
         intervals.push((low, high));
     }
 
-    for i in 0..2 {
+    let mut lowest_high = 0;
+
+    loop {
+        let mut done = true;
         for &(low, high) in &intervals {
-            println!("{} - {}", low, high);
+            if low <= lowest_high+1 && high > lowest_high {
+                lowest_high = high;
+                println!("New lowest_high: {}", lowest_high);
+                done = false;
+            }
         }
 
-        println!("\n\n\n\n\n\n\n");
+        if done {
+            break;
+        }
     }
+
+    println!("Answer: {}", lowest_high+1);
 }
 
 fn part_two() {
