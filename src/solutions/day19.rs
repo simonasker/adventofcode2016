@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 pub fn run(part: i32) {
     match part {
         1 => part_one(),
@@ -8,59 +6,50 @@ pub fn run(part: i32) {
     }
 }
 
-const ELVES: i32 = 3018458;
-//const ELVES: i32 = 5;
-
 fn part_one() {
-    let mut elves_left = ELVES;
+    let input = 3018458;
+    let mut res = 0;
+    for i in 0.. {
+        if i32::pow(2, i) > input {
+            res = i32::pow(2, (i-1));
+            break;
+        }
+    }
+    let answer = (input - res) * 2 + 1;
+    println!("Answer: {}", answer);
+}
 
-    let mut presents: HashMap<i32, i32> = HashMap::new();
+fn part_two() {
+    let input = 3018458;
+}
 
-    for i in 0..ELVES {
-        presents.insert(i, 1);
+fn get_last_elf(num_elves: i32) -> i32 {
+    let mut elves: Vec<i32> = Vec::new();
+
+    for i in 1..num_elves+1 {
+        elves.push(i);
     }
 
     let mut i = 0;
     loop {
-        println!("{}", elves_left);
-        match presents.get(&i) {
-            None => { },
-            Some(&0) => { },
-            Some(&ELVES) => {
-                println!("Answer: {}", i+1);
-                break;
-            },
-            Some(_) => {
-
-                let mut steps = elves_left / 2;
-                let mut next_elf = i;
-
-                while steps > 0 {
-                    next_elf = (next_elf + 1) % ELVES;
-
-                    if presents.get(&next_elf).unwrap_or(&0) > &0 {
-                        steps -= 1;
-                    }
-                }
-
-                let mut num_presents;
-
-                {
-                    let next = presents.get_mut(&next_elf).unwrap();
-                    num_presents = *next;
-                    *next = 0;
-                    elves_left -= 1;
-                }
-
-                let current = presents.get_mut(&i).unwrap();
-                *current += num_presents;
-            },
+        // println!("{:?}", elves);
+        // println!("Index: {}", i);
+        if elves.len() == 1 {
+            break;
         }
 
-        i = (i + 1) % ELVES;
+        let next = (i + 1) % elves.len();
+        // println!("Removing elves[{}]: {}", next, elves[next]);
+        elves.remove(next);
+
+        if i == elves.len() {
+            i -= 1;
+        }
+
+        i = (i + 1) % elves.len();
+
     }
+
+    elves[0]
 }
 
-fn part_two() {
-    println!("Not yet implemented");
-}
