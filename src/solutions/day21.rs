@@ -59,10 +59,18 @@ fn part_one() {
 
         // Reverse positions X through position Y
         if let Some(caps) = re_3.captures(&line) {
-            let x = i32::from_str(caps.at(1).unwrap()).unwrap();
-            let y = i32::from_str(caps.at(2).unwrap()).unwrap();
-
-            println!("-> REVERSE POSITIONS: {} {}", x, y);
+            let x = usize::from_str(caps.at(1).unwrap()).unwrap();
+            let y = usize::from_str(caps.at(2).unwrap()).unwrap();
+            let mut sub = Vec::new();
+            for i in x..y+1 {
+                sub.push(chars[i]);
+            }
+            sub.reverse();
+            let mut sub_iter = sub.iter();
+            for i in x..y+1 {
+                chars[i] = *sub_iter.next().unwrap();
+            }
+            println!("-> {:?}", chars);
         }
 
         // Rotate DIR X steps
