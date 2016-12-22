@@ -17,6 +17,13 @@ fn part_one() {
     let f = File::open("input/day21_example.txt").unwrap();
     let reader = BufReader::new(f);
 
+    let start = "abcde";
+
+    let mut chars: Vec<char> = start.chars().collect();
+
+    println!("{:?}\n", chars);
+
+
     let re_1 = regex::Regex::new(r"^swap position (\d+) with position (\d+)$").unwrap();
     let re_2 = regex::Regex::new(r"^swap letter (\w) with letter (\w)$").unwrap();
     let re_3 = regex::Regex::new(r"^reverse positions (\d+) through (\d+)$").unwrap();
@@ -30,10 +37,12 @@ fn part_one() {
 
         // Swap position X with position Y
         if let Some(caps) = re_1.captures(&line) {
-            let x = i32::from_str(caps.at(1).unwrap()).unwrap();
-            let y = i32::from_str(caps.at(2).unwrap()).unwrap();
-
-            println!("-> SWAP POSITION: {} {}", x, y);
+            let x = usize::from_str(caps.at(1).unwrap()).unwrap();
+            let y = usize::from_str(caps.at(2).unwrap()).unwrap();
+            let temp = chars[x];
+            chars[x] = chars[y];
+            chars[y] = temp;
+            println!("-> {:?}", chars);
         }
 
         // Swap letter X with letter Y
