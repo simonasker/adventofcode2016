@@ -15,7 +15,7 @@ pub fn run(part: i32) {
 }
 
 fn part_one() {
-    let f = File::open("input/day21.txt").unwrap();
+    let f = File::open("input/day21_example.txt").unwrap();
     let reader = BufReader::new(f);
 
     // let start = "abcde"; // Example starting string
@@ -125,12 +125,13 @@ fn part_one() {
 }
 
 fn part_two() {
-    let f = File::open("input/day21.txt").unwrap();
+    let f = File::open("input/day21_example.txt").unwrap();
     let reader = BufReader::new(f);
 
     // let start = "abcde"; // Example starting string
     // let start = "fbgdceah";
-    let start = "fdhbcgea"; // Solution to part 1
+    //let start = "fdhbcgea"; // Solution to part 1
+    let start = "dfcbegha"; // My dummy solution
 
     let mut chars: Vec<char> = start.chars().collect();
 
@@ -193,13 +194,13 @@ fn part_two() {
             let dir = caps.at(1).unwrap();
             let x = i32::from_str(caps.at(2).unwrap()).unwrap();
             match dir {
-                "left" => {
+                "right" => {
                     for _ in 0..x {
                         let c = chars.remove(0);
                         chars.push(c);
                     }
                 },
-                "right" => {
+                "left" => {
                     for _ in 0..x {
                         let c = chars.pop().unwrap();
                         chars.insert(0, c);
@@ -214,8 +215,8 @@ fn part_two() {
         if let Some(caps) = re_5.captures(&line) {
             let x = usize::from_str(caps.at(1).unwrap()).unwrap();
             let y = usize::from_str(caps.at(2).unwrap()).unwrap();
-            let c = chars.remove(x);
-            chars.insert(y, c);
+            let c = chars.remove(y);
+            chars.insert(x, c);
             println!("-> {:?}", chars);
         }
 
@@ -226,8 +227,8 @@ fn part_two() {
             let mut steps = 1 + ix;
             if ix >= 4 { steps += 1; }
             for _ in 0..steps {
-                let c = chars.pop().unwrap();
-                chars.insert(0, c);
+                let c = chars.remove(0);
+                chars.push(c);
             }
             println!("-> {:?}", chars);
         }
