@@ -106,9 +106,15 @@ fn part_one() {
 
         // Rotate based on position of letter X
         if let Some(caps) = re_6.captures(&line) {
-            let x = caps.at(1).unwrap();
-
-            println!("-> MOVE ON LETTER: {}", x);
+            let x = caps.at(1).unwrap().chars().nth(0).unwrap();
+            let ix = chars.iter().position(|&c| c == x).unwrap();
+            let mut steps = 1 + ix;
+            if ix >= 4 { steps += 1; }
+            for _ in 0..steps {
+                let c = chars.pop().unwrap();
+                chars.insert(0, c);
+            }
+            println!("-> {:?}", chars);
         }
     }
 }
