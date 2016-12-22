@@ -97,10 +97,11 @@ fn part_one() {
 
         // Move position X to position Y
         if let Some(caps) = re_5.captures(&line) {
-            let x = i32::from_str(caps.at(1).unwrap()).unwrap();
-            let y = i32::from_str(caps.at(2).unwrap()).unwrap();
-
-            println!("-> MOVE POSITION: {} {}", x, y);
+            let x = usize::from_str(caps.at(1).unwrap()).unwrap();
+            let y = usize::from_str(caps.at(2).unwrap()).unwrap();
+            let c = chars.remove(x);
+            chars.insert(y, c);
+            println!("-> {:?}", chars);
         }
 
         // Rotate based on position of letter X
