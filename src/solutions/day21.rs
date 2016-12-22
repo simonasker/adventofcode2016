@@ -47,10 +47,14 @@ fn part_one() {
 
         // Swap letter X with letter Y
         if let Some(caps) = re_2.captures(&line) {
-            let x = caps.at(1).unwrap();
-            let y = caps.at(2).unwrap();
-
-            println!("-> SWAP LETTER: {} {}", x, y);
+            let x = caps.at(1).unwrap().chars().nth(0).unwrap();
+            let y = caps.at(2).unwrap().chars().nth(0).unwrap();
+            let ix = chars.iter().position(|&c| c == x).unwrap();
+            let iy = chars.iter().position(|&c| c == y).unwrap();
+            let temp = chars[ix];
+            chars[ix] = chars[iy];
+            chars[iy] = temp;
+            println!("-> {:?}", chars);
         }
 
         // Reverse positions X through position Y
