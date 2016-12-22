@@ -77,8 +77,22 @@ fn part_one() {
         if let Some(caps) = re_4.captures(&line) {
             let dir = caps.at(1).unwrap();
             let x = i32::from_str(caps.at(2).unwrap()).unwrap();
-
-            println!("-> ROTATE: {} {}", dir, x);
+            match dir {
+                "left" => {
+                    for _ in 0..x {
+                        let c = chars.remove(0);
+                        chars.push(c);
+                    }
+                },
+                "right" => {
+                    for _ in 0..x {
+                        let c = chars.pop().unwrap();
+                        chars.insert(0, c);
+                    }
+                },
+                _ => panic!("Invalid direction"),
+            }
+            println!("-> {:?}", chars);
         }
 
         // Move position X to position Y
