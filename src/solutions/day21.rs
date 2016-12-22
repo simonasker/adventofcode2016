@@ -14,10 +14,11 @@ pub fn run(part: i32) {
 }
 
 fn part_one() {
-    let f = File::open("input/day21_example.txt").unwrap();
+    let f = File::open("input/day21.txt").unwrap();
     let reader = BufReader::new(f);
 
-    let start = "abcde";
+    // let start = "abcde"; // Example starting string
+    let start = "abcdefgh";
 
     let mut chars: Vec<char> = start.chars().collect();
 
@@ -117,6 +118,9 @@ fn part_one() {
             println!("-> {:?}", chars);
         }
     }
+
+    let answer: String = chars.into_iter().collect();
+    println!("Answer: {}", answer);
 }
 
 fn part_two() {
