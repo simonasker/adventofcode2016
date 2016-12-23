@@ -125,13 +125,10 @@ fn part_one() {
 }
 
 fn part_two() {
-    let f = File::open("input/day21_example.txt").unwrap();
+    let f = File::open("input/day21.txt").unwrap();
     let reader = BufReader::new(f);
 
-    // let start = "abcde"; // Example starting string
-    // let start = "fbgdceah";
-    //let start = "fdhbcgea"; // Solution to part 1
-    let start = "dfcbegha"; // My dummy solution
+    let start = "fbgdceah";
 
     let mut chars: Vec<char> = start.chars().collect();
 
@@ -223,12 +220,20 @@ fn part_two() {
         // Rotate based on position of letter X
         if let Some(caps) = re_6.captures(&line) {
             let x = caps.at(1).unwrap().chars().nth(0).unwrap();
-            let ix = chars.iter().position(|&c| c == x).unwrap();
-            let mut steps = 1 + ix;
-            if ix >= 4 { steps += 1; }
-            for _ in 0..steps {
+            let mut steps = 0;
+            loop {
                 let c = chars.remove(0);
                 chars.push(c);
+                steps += 1;
+
+                let ix = chars.iter().position(|&c| c == x).unwrap();
+                let mut extra_step = 0;
+                if ix >= 4 {
+                    extra_step = 1;
+                }
+                if steps == 1 + ix + extra_step {
+                    break;
+                }
             }
             println!("-> {:?}", chars);
         }
